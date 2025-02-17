@@ -1,0 +1,73 @@
+import Rules from "./controlers/rules.js"
+import Render from "./views/render.js"
+import Game, { gameMode } from "./models/game.js"
+
+window.onload = function (){
+    
+}
+
+export const canvas = document.getElementById('tela')
+const hudPlayer = document.getElementById('idPlayer')
+const hudVelo = document.getElementById('velo')
+export const hudScore = document.getElementById('score')
+export const hudHiScore = document.getElementById('hiScore')
+const msgGameOver = document.getElementById('msgGameOver')
+const msgHiScore = document.getElementById('msgHiScore')
+
+
+const btnVelocidadeMais = document.getElementById('btnVelocidadeMais')
+btnVelocidadeMais.addEventListener('click', () => {
+    game.addVelocidade()
+    hudVelo.innerHTML = game.velocidade.toString()
+
+})
+
+const btnVelocidadeMenos = document.getElementById('btnVelocidadeMenos')
+btnVelocidadeMenos.addEventListener('click', () => {
+    game.dimVelocidade()
+    hudVelo.innerHTML = game.velocidade.toString()
+})
+
+const btnIniciar = document.getElementById('btnIniciar')
+btnIniciar.addEventListener('click', () => {
+    game.iniciar()
+})
+
+const btnPausa = document.getElementById('btnPausa')
+btnPausa.addEventListener('click', () => {
+    game.pausar()
+})
+
+export const atualizarPontos = function(pontos = 0){
+    hudScore.innerHTML = pontos
+}
+
+export const atualizarHiScore = function(){
+    hudHiScore.innerHTML = game.hiScore
+}
+
+export const mostrarIdPlayer = function(idPlayer){
+    hudPlayer.innerHTML = idPlayer
+}
+
+export const mostrarGameOver = function(msg){
+    msgGameOver.innerHTML = msg
+}
+
+export const mostrarHiScore = function(msg){
+    msgHiScore.innerHTML = msg
+}
+
+export const pegarIdPlayer = async function(){
+    const nome = prompt('Digite o seu nome')
+    return nome
+}
+
+const game = Game()
+game.modo = gameMode.parede
+const visual = Render(game)
+const regras = Rules(game)
+game.carregarRegras(regras)
+game.carregarVisual(visual)
+
+

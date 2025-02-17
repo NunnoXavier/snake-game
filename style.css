@@ -1,0 +1,88 @@
+*{
+    margin: 0;
+    padding: 0;
+
+    font-family: "Sono", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-variation-settings:
+    "MONO" 1;
+}
+
+.estilo-game{
+    font-family: "Doto", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-variation-settings:
+      "ROND" 0;    
+}
+
+canvas{
+    border: 1px solid green;
+    z-index: 0;
+}
+
+.root{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    background: #000000;
+    color: green;
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    position: relative;
+}
+
+.column{
+    flex-direction: column;
+}
+
+.row{
+    flex-direction: row;
+}
+
+.container-botoes{
+    gap: 5px;
+}
+
+button{
+    background: black;
+    color: green;
+    border: 1px solid green;
+    padding-left: 5px;
+    padding-right: 3px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    outline: none;
+    min-width: 10em;
+    font-size: 1.2em;
+}
+
+.hud{
+    border: 1px solid green;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.space{
+    justify-content: space-between;
+}
+
+.float{
+    position: absolute;
+    top: 45%;
+    left: 35%;
+    z-index: 1;
+}
+
+.gameover{
+    color: green;
+    font-size: 4em;
+    width: 100%;
+}
