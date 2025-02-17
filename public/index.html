@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Sono:wght@200..800&display=swap" rel="stylesheet">    
+    <title>Snake</title>
+</head>
+<body>
+    <div id="root" class="root">
+        <h1 class="estilo-game">Snake Game</h1>
+        <div class="container column">
+            <div class="container space hud">
+                <div>
+                    <span>PLAYER: </span>
+                    <span id="idPlayer">PLAYER</span>
+                </div>
+                <div>
+                    <span>VELO: </span>
+                    <span id="velo">1</span>
+                </div>
+                <div>
+                    <span>SCORE: </span>
+                    <span id="score">0</span>
+                </div>
+                <div>
+                    <span>HI-SCORE: </span>
+                    <span id="hiScore">0</span>
+                </div>
+
+            </div>
+            <canvas id="tela"></canvas>
+            <div class="container float column">
+                <h1 id="msgGameOver" class="gameover estilo-game"></h1>
+                <h2 id="msgHiScore" class="hiscore estilo-game"></h2>
+            </div>
+        </div>
+        <div class="container container-botoes">
+            <button id='btnVelocidadeMais'>+ velocidade</button>
+            <button id='btnVelocidadeMenos'>- velocidade</button>
+            <button id='btnIniciar'>Iniciar</button>
+            <button id='btnPausa'>Pausa</button>
+        </div>
+    </div>
+
+
+    <script type="module" src="/index.js"></script>
+</body>
+</html>
