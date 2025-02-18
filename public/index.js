@@ -46,7 +46,7 @@ export const atualizarHiScore = function(){
 }
 
 export const mostrarIdPlayer = function(idPlayer = 'Player'){
-    hudPlayer.innerHTML = idPlayer.slice(1,8)
+    hudPlayer.innerHTML = idPlayer.slice(0,8)
 }
 
 export const mostrarGameOver = function(msg){
@@ -63,7 +63,7 @@ export const pegarIdPlayer = async function(){
 }
 
 const game = Game()
-game.modo = gameMode.parede
+game.modo = gameMode.teletransporte
 const regras = Rules(game)
 game.carregarRegras(regras)
 const motor1 = Render(game)

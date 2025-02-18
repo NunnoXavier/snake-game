@@ -1,11 +1,14 @@
 const Fruit = function(game){
-    const larguraTela = Math.floor(game.larguraTela / game.zoom)
-    const alturaTela = Math.floor(game.alturaTela / game.zoom)
-    return {
-        x: Math.floor(Math.random() * larguraTela),
-        y: Math.floor(Math.random() * alturaTela),
+    const largura = game.limiteLargura()
+    const altura =  game.limiteAltura()
+    const novaFruta = {
+        x: Math.floor(Math.random() * largura),
+        y: Math.floor(Math.random() * altura),
         cor: 'red'
     }
+
+    game.logs && console.log(`fruit: nova fruta em `, novaFruta)
+    return novaFruta
 }
 
 export default Fruit

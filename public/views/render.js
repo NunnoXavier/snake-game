@@ -17,7 +17,7 @@ const Render = function(game){
         game.larguraTela = deviceDimension.width >= 1024 ? 900 : deviceDimension.width - Math.floor(deviceDimension.width * 0.1)
         canvas.height = game.alturaTela
         canvas.width = game.larguraTela
-        console.log(deviceDimension)
+        game.logs && console.log(deviceDimension)
     }
     
     definirTamanhoDaTela()
@@ -25,25 +25,29 @@ const Render = function(game){
     const render = function(){
         frame ++
 
+        
         if (frame >= Math.floor(60 / game.velocidade)) {
-            frame = 0
             tela.clearRect(0,0, game.alturaTela, game.larguraTela)
             
             for(const player in game.players){           
                 game.players[player].andar()
                 game.verificaSeComeuFruta(player)    
                 game.verificaSeColidiuParede(player)    
+                game.verificaSeColidiuCalda(player)  
                 
                 game.players[player].calda.forEach((celula) =>{
                     tela.fillStyle = game.players[player].cor
                     tela.fillRect(celula.x, celula.y, 1, 1)
                 })
+
+                game.logs && console.log(`render: player ${ player }`, game.players[player].calda[0])
             }
             
             game.frutas.forEach((fruta) => {
                 tela.fillStyle = fruta.cor
                 tela.fillRect(fruta.x, fruta.y, 1, 1)            
             })
+            frame = 0
         }    
             
         requestAnimationFrame(r)

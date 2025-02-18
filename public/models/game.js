@@ -18,7 +18,15 @@ const Game = function(){
         status: gameStatus.wait,
         alturaTela: 0,
         larguraTela: 0,
-        zoom: 30,
+        limiteAltura: function(){
+             return Math.floor(this.alturaTela / this.zoom) -1
+        },
+
+        limiteLargura: function(){
+            return Math.floor(this.larguraTela / this.zoom) -1
+        },
+
+        zoom: 25,
         velocidade: 1,
         players: {},
         frutas: [],
@@ -65,14 +73,11 @@ const Game = function(){
             return frutaComida
         },
         verificaSeColidiuParede: function(player){
-            const limiteAltura = Math.floor(this.alturaTela / this.zoom)-1
-            const limiteLargura = Math.floor(this.larguraTela / this.zoom)-1
-    
             let colidiu = false
             if(
-                this.players[player].calda[0].x > limiteLargura 
+                this.players[player].calda[0].x > this.limiteLargura() 
               | this.players[player].calda[0].x < 0
-              | this.players[player].calda[0].y > limiteAltura
+              | this.players[player].calda[0].y > this.limiteAltura()
               | this.players[player].calda[0].y < 0
             ){
                 colidiu = true
@@ -80,7 +85,29 @@ const Game = function(){
             if (colidiu) regras.colisaoParede(player)
             return colidiu
         },
+
+        verificaSeColidiuCalda: function(idPlayer){            
+            let colidiu = false
+            for(let player in this.players){
+                this.players[player].calda.forEach((celula, indice)=>{
+                    if( indice === 0 && player === idPlayer){
+                        return
+                    }
+
+                    if(                        
+                        this.players[idPlayer].calda[0].x === celula.x 
+                        && this.players[player].calda[0].y === celula.y
+                    ){
+                        colidiu = true
+                    }
+                })
+            }
+            if (colidiu) regras.colisaoCalda(idPlayer)
+            return colidiu
+        },
+
         modo: gameMode,
+        logs: true
     }
 }
 

@@ -26,7 +26,6 @@ const Inputs = function(player){
         ativarTeclas: function(element){
             element.addEventListener('keydown',(event) => {
                 setDirecao(event.key)
-                // console.log(`inputs: tecla ${event.key}`)
             })
         }
     }
