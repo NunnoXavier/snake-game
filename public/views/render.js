@@ -2,20 +2,30 @@ import { canvas } from "../index.js"
 import { gameStatus } from "../models/game.js"
 
 
+export const deviceDimension = { 
+    heigth: window.innerHeight,
+    width: window.innerWidth
+}
+
+
 const Render = function(game){
     let frame = 0
-
-    canvas.height = game.alturaTela
-    canvas.width = game.larguraTela
-    
     const tela = canvas.getContext('2d')
+    
+    const definirTamanhoDaTela = function(){
+        game.alturaTela = deviceDimension.heigth >=  900? 700 : deviceDimension.heigth - Math.floor(deviceDimension.heigth * 0.25)
+        game.larguraTela = deviceDimension.width >= 1024 ? 900 : deviceDimension.width - Math.floor(deviceDimension.width * 0.1)
+        canvas.height = game.alturaTela
+        canvas.width = game.larguraTela
+        console.log(deviceDimension)
+    }
+    
+    definirTamanhoDaTela()
     tela.scale(game.zoom,game.zoom)    
-    
-    
     const render = function(){
         frame ++
 
-        if (frame >= Math.floor(10 / game.velocidade)) {
+        if (frame >= Math.floor(60 / game.velocidade)) {
             frame = 0
             tela.clearRect(0,0, game.alturaTela, game.larguraTela)
             
@@ -56,7 +66,7 @@ const Render = function(game){
     }    
 
     return{
-        rodarFrames: r,
+        rodarFrames: r
     }
 }
 

@@ -11,14 +11,14 @@ export const gameMode = Object.freeze({
 })
 
 let regras = {}
-let visual = {}
+let motor1
 
 const Game = function(){
     return {
         status: gameStatus.wait,
-        alturaTela: 700,
-        larguraTela: 900,
-        zoom: 20,
+        alturaTela: 0,
+        larguraTela: 0,
+        zoom: 30,
         velocidade: 1,
         players: {},
         frutas: [],
@@ -26,12 +26,12 @@ const Game = function(){
         carregarRegras: function(pRegras){
             regras = pRegras
         },
-        carregarVisual: function(pVisual){
-            visual = pVisual
+        carregarVisual: function(pMotor1){
+            motor1 = pMotor1
         },
 
         addVelocidade: function(){
-            this.velocidade < 10 ? this.velocidade += 1 : this.velocidade = 10
+            this.velocidade < 16 ? this.velocidade += 1 : this.velocidade = 16
         },
         dimVelocidade: function(){
             this.velocidade > 1 ? this.velocidade -= 1 : this.velocidade = 1
@@ -40,7 +40,7 @@ const Game = function(){
             if(this.status == gameStatus.run || this.status == gameStatus.pause) return
             this.status = gameStatus.run
             regras.inicio()
-            visual.rodarFrames()
+            motor1.rodarFrames()
         },
     
         pausar: function(){
@@ -48,7 +48,7 @@ const Game = function(){
                 this.status = gameStatus.pause
             }else if(this.status === gameStatus.pause){
                 this.status = gameStatus.run
-                visual.rodarFrames()
+                motor1.rodarFrames()
             }
         },
     
