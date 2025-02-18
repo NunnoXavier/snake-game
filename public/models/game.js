@@ -18,7 +18,7 @@ const Game = function(){
         status: gameStatus.wait,
         alturaTela: 700,
         larguraTela: 900,
-        zoom: 10,
+        zoom: 20,
         velocidade: 1,
         players: {},
         frutas: [],
