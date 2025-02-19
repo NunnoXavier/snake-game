@@ -1,20 +1,19 @@
 
-
-const Inputs = function(player){
+const Inputs = function(game){
     
     function setDirecao(tecla){
         switch (tecla) {
             case 'ArrowUp':
-                player.direcao = 'cima'            
+                game.players[game.idCurrentPlayer].direcao = 'cima'            
                 break;
             case 'ArrowDown':
-                player.direcao = 'baixo'                                
+                game.players[game.idCurrentPlayer].direcao = 'baixo'                                
                 break;
             case 'ArrowLeft':
-                player.direcao = 'esquerda'                                 
+                game.players[game.idCurrentPlayer].direcao = 'esquerda'                                 
                 break;
             case 'ArrowRight':
-                player.direcao = 'direita'                          
+                game.players[game.idCurrentPlayer].direcao = 'direita'                          
                 break;
         
             default:
@@ -23,10 +22,14 @@ const Inputs = function(player){
     }
 
     return {
-        ativarTeclas: function(element){
+        ativarTeclas: function(element ){
             element.addEventListener('keydown',(event) => {
                 setDirecao(event.key)
-                // console.log(`inputs: tecla ${event.key}`)
+                const player = game.idCurrentPlayer
+                game.players[player].andar()
+                game.verificaSeComeuFruta(player)    
+                game.verificaSeColidiuParede(player)    
+                game.verificaSeColidiuCalda(player)
             })
         }
     }

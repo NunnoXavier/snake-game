@@ -1,3 +1,10 @@
+import Inputs from '../controlers/inputs.js'
+import { pegarIdPlayer } from '../index.js'
+import Snake from './snake.js'
+import Fruit from './fruit.js'
+import { atualizarPontos, atualizarHiScore, mostrarIdPlayer, mostrarGameOver, mostrarHiScore,
+    atualizarVelocidade } from '../index.js'
+
 export const gameStatus = Object.freeze({
     wait: 0,
     run: 1,
@@ -11,36 +18,73 @@ export const gameMode = Object.freeze({
 })
 
 let regras = {}
-let visual = {}
+let motor1
+let inputs
 
 const Game = function(){
     return {
+        idCurrentPlayer: 'snake1',
         status: gameStatus.wait,
-        alturaTela: 700,
-        larguraTela: 900,
-        zoom: 20,
-        velocidade: 1,
+        alturaTela: 0,
+        larguraTela: 0,
+        limiteAltura: function(){
+             return Math.floor(this.alturaTela / this.zoom) -1
+        },
+
+        limiteLargura: function(){
+            return Math.floor(this.larguraTela / this.zoom) -1
+        },
+
+        zoom: 25,
         players: {},
         frutas: [],
         hiScore: 0,
         carregarRegras: function(pRegras){
             regras = pRegras
         },
-        carregarVisual: function(pVisual){
-            visual = pVisual
+        carregarVisual: function(pMotor1){
+            motor1 = pMotor1
         },
 
         addVelocidade: function(){
-            this.velocidade < 10 ? this.velocidade += 1 : this.velocidade = 10
+            this.players[this.idCurrentPlayer].velocidade < 16 ? this.players[this.idCurrentPlayer].velocidade += 1 : this.players[this.idCurrentPlayer].velocidade = 16
+            atualizarVelocidade()
         },
         dimVelocidade: function(){
-            this.velocidade > 1 ? this.velocidade -= 1 : this.velocidade = 1
+            this.players[this.idCurrentPlayer].velocidade > 1 ? this.players[this.idCurrentPlayer].velocidade -= 1 : this.players[this.idCurrentPlayer].velocidade = 1
+            atualizarVelocidade()
         },
-        iniciar: function(){
+        
+        getVelocidade: function(){
+            return this.players[this.idCurrentPlayer].velocidade
+        },
+
+        setVelocidade: function(novaVelocidade = 1){
+            this.players[this.idCurrentPlayer].velocidade = novaVelocidade
+            atualizarVelocidade()
+        },
+
+        iniciar: async function(){
             if(this.status == gameStatus.run || this.status == gameStatus.pause) return
             this.status = gameStatus.run
-            regras.inicio()
-            visual.rodarFrames()
+            this.idCurrentPlayer = await pegarIdPlayer()
+            this.players = []
+            this.players[this.idCurrentPlayer] = Snake(this.idCurrentPlayer)            
+            
+            inputs = Inputs(this)
+            inputs.ativarTeclas(document)            
+            
+            this.frutas = []
+            this.frutas.push(Fruit(this))
+            
+            atualizarPontos(0)
+            atualizarVelocidade()
+            atualizarHiScore(this.hiScore)
+            mostrarIdPlayer(this.idCurrentPlayer)
+            mostrarGameOver('')
+            mostrarHiScore('')
+            motor1.rodarFrames()
+
         },
     
         pausar: function(){
@@ -48,7 +92,7 @@ const Game = function(){
                 this.status = gameStatus.pause
             }else if(this.status === gameStatus.pause){
                 this.status = gameStatus.run
-                visual.rodarFrames()
+                motor1.rodarFrames()
             }
         },
     
@@ -65,14 +109,11 @@ const Game = function(){
             return frutaComida
         },
         verificaSeColidiuParede: function(player){
-            const limiteAltura = Math.floor(this.alturaTela / this.zoom)-1
-            const limiteLargura = Math.floor(this.larguraTela / this.zoom)-1
-    
             let colidiu = false
             if(
-                this.players[player].calda[0].x > limiteLargura 
+                this.players[player].calda[0].x > this.limiteLargura() 
               | this.players[player].calda[0].x < 0
-              | this.players[player].calda[0].y > limiteAltura
+              | this.players[player].calda[0].y > this.limiteAltura()
               | this.players[player].calda[0].y < 0
             ){
                 colidiu = true
@@ -80,7 +121,37 @@ const Game = function(){
             if (colidiu) regras.colisaoParede(player)
             return colidiu
         },
+
+        verificaSeColidiuCalda: function(idPlayer){            
+            let colidiu = false
+            for(let player in this.players){
+                this.players[player].calda.forEach((celula, indice)=>{
+                    if( indice === 0 && player === idPlayer){
+                        return
+                    }
+
+                    if(                        
+                        this.players[idPlayer].calda[0].x === celula.x 
+                        && this.players[player].calda[0].y === celula.y
+                    ){
+                        colidiu = true
+                    }
+                })
+            }
+            if (colidiu) regras.colisaoCalda(idPlayer)
+            return colidiu
+        },
+
+        verificarPassos: function(idPlayer){
+            regras.passos(this.players[idPlayer])
+        },
+
+        verificaPontuacao: function(idPlayer){
+            regras.pontuacao(this.players[idPlayer])
+        },
+
         modo: gameMode,
+        logs: true
     }
 }
 

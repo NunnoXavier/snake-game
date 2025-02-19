@@ -9,6 +9,11 @@
     "MONO" 1;
 }
 
+body{
+    max-height: 100vh;
+    max-width: 100vw;
+}
+
 .estilo-game{
     font-family: "Doto", serif;
     font-optical-sizing: auto;
@@ -39,6 +44,10 @@ canvas{
     position: relative;
 }
 
+.center{
+    text-align: center;
+}
+
 .column{
     flex-direction: column;
 }
@@ -48,7 +57,10 @@ canvas{
 }
 
 .container-botoes{
+    margin-top: 5px;
+    margin-bottom: 5px;
     gap: 5px;
+    max-width: 100%;
 }
 
 button{
@@ -60,7 +72,7 @@ button{
     padding-top: 1px;
     padding-bottom: 1px;
     outline: none;
-    min-width: 10em;
+    min-width: 8em;
     font-size: 1.2em;
 }
 

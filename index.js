@@ -14,20 +14,6 @@ export const hudHiScore = document.getElementById('hiScore')
 const msgGameOver = document.getElementById('msgGameOver')
 const msgHiScore = document.getElementById('msgHiScore')
 
-
-const btnVelocidadeMais = document.getElementById('btnVelocidadeMais')
-btnVelocidadeMais.addEventListener('click', () => {
-    game.addVelocidade()
-    hudVelo.innerHTML = game.velocidade.toString()
-
-})
-
-const btnVelocidadeMenos = document.getElementById('btnVelocidadeMenos')
-btnVelocidadeMenos.addEventListener('click', () => {
-    game.dimVelocidade()
-    hudVelo.innerHTML = game.velocidade.toString()
-})
-
 const btnIniciar = document.getElementById('btnIniciar')
 btnIniciar.addEventListener('click', () => {
     game.iniciar()
@@ -39,15 +25,15 @@ btnPausa.addEventListener('click', () => {
 })
 
 export const atualizarPontos = function(pontos = 0){
-    hudScore.innerHTML = pontos
+    hudScore.innerHTML = pontos.toString().padStart(4,'0')
 }
 
 export const atualizarHiScore = function(){
-    hudHiScore.innerHTML = game.hiScore
+    hudHiScore.innerHTML = game.hiScore.toString().padStart(4,'0')
 }
 
-export const mostrarIdPlayer = function(idPlayer){
-    hudPlayer.innerHTML = idPlayer
+export const mostrarIdPlayer = function(idPlayer = 'Player'){
+    hudPlayer.innerHTML = idPlayer.slice(0,8)
 }
 
 export const mostrarGameOver = function(msg){
@@ -63,11 +49,15 @@ export const pegarIdPlayer = async function(){
     return nome
 }
 
+export const atualizarVelocidade = function(){
+    hudVelo.innerHTML = game.getVelocidade().toString()    
+}
+
 const game = Game()
-game.modo = gameMode.parede
-const visual = Render(game)
+game.modo = gameMode.teletransporte
 const regras = Rules(game)
 game.carregarRegras(regras)
-game.carregarVisual(visual)
+const motor1 = Render(game)
+game.carregarVisual(motor1)
 
 

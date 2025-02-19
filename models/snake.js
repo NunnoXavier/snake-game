@@ -27,8 +27,8 @@ const Snake = function( id ){
         cor: 'white',
         adicionarCalda: function(){
             this.calda.push({
-                x: this.calda[0].x, 
-                y: this.calda[0].y
+                x: this.calda[this.calda.length -1].x, 
+                y: this.calda[this.calda.length -1].y
             })
         },
         posicaoAtual: function(){
@@ -50,15 +50,13 @@ const Snake = function( id ){
                 this.calda[i].x = this.calda[i-1].x
                 this.calda[i].y = this.calda[i-1].y
             }
-            movimentarCabeca(this.calda[0])
+            movimentarCabeca(this.calda[0])        
+            this.passos === 9999? this.passos = 0 : this.passos ++
         },
-
-        pontos: 0
+        pontos: 0,
+        passos: 0,
+        velocidade: 1
     }
-    
-
-
-
 
     return p
 }
