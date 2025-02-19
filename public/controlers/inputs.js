@@ -1,5 +1,14 @@
 
 const Inputs = function(game){
+
+    function callback(event){
+        setDirecao(event.key)
+        const player = game.idCurrentPlayer
+        game.players[player].andar()
+        game.verificaSeComeuFruta(player)    
+        game.verificaSeColidiuParede(player)    
+        game.verificaSeColidiuCalda(player)
+    }
     
     function setDirecao(tecla){
         switch (tecla) {
@@ -20,17 +29,11 @@ const Inputs = function(game){
                 break;
         }
     }
-
+    
     return {
         ativarTeclas: function(element ){
-            element.addEventListener('keydown',(event) => {
-                setDirecao(event.key)
-                const player = game.idCurrentPlayer
-                game.players[player].andar()
-                game.verificaSeComeuFruta(player)    
-                game.verificaSeColidiuParede(player)    
-                game.verificaSeColidiuCalda(player)
-            })
+            element.removeEventListener('keydown', callback)
+            element.addEventListener('keydown', callback)
         }
     }
 }
