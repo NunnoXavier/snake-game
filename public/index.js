@@ -14,19 +14,6 @@ export const hudHiScore = document.getElementById('hiScore')
 const msgGameOver = document.getElementById('msgGameOver')
 const msgHiScore = document.getElementById('msgHiScore')
 
-const btnVelocidadeMais = document.getElementById('btnVelocidadeMais')
-btnVelocidadeMais.addEventListener('click', () => {
-    game.addVelocidade()
-    hudVelo.innerHTML = game.velocidade.toString()
-
-})
-
-const btnVelocidadeMenos = document.getElementById('btnVelocidadeMenos')
-btnVelocidadeMenos.addEventListener('click', () => {
-    game.dimVelocidade()
-    hudVelo.innerHTML = game.velocidade.toString()
-})
-
 const btnIniciar = document.getElementById('btnIniciar')
 btnIniciar.addEventListener('click', () => {
     game.iniciar()
@@ -60,6 +47,10 @@ export const mostrarHiScore = function(msg){
 export const pegarIdPlayer = async function(){
     const nome = prompt('Digite o seu nome')
     return nome
+}
+
+export const atualizarVelocidade = function(){
+    hudVelo.innerHTML = game.getVelocidade().toString()    
 }
 
 const game = Game()

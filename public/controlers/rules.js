@@ -1,9 +1,6 @@
-import Snake from '../models/snake.js'
-import Inputs from '../controlers/inputs.js'
 import Fruit from "../models/fruit.js"
 import { gameMode, gameStatus } from "../models/game.js"
-import { atualizarPontos, mostrarGameOver, mostrarHiScore, atualizarHiScore, 
-    pegarIdPlayer, mostrarIdPlayer } from "../index.js"
+import { atualizarPontos, mostrarGameOver, mostrarHiScore, atualizarVelocidade } from "../index.js"
 
 const Rules = function(game){
     
@@ -23,10 +20,11 @@ const Rules = function(game){
     const p = {
         comerFruta: function(idPlayer, idFruta){
             game?.players[idPlayer]?.adicionarCalda()
-            game.players[idPlayer].pontos += 1
-            game?.frutas?.splice(idFruta, 1)
-            game?.frutas?.push(Fruit(game))
+            game.players[idPlayer].pontos += game?.frutas[idFruta].pontos
             atualizarPontos(game.players[idPlayer].pontos)
+            game?.frutas?.splice(idFruta, 1)
+            const novaFruta = Fruit(game)
+            game?.frutas?.push(novaFruta)
 
             game.logs && console.log(`Rules: ${idPlayer} - pontuação: ${game.players[idPlayer].pontos}`)
         },
@@ -63,23 +61,13 @@ const Rules = function(game){
             }
             game.logs && console.log(`rules: score: ${game.players[idPlayer].pontos} | hi-score: ${game.hiScore}`)
         },
+        passos: function(player){
 
-        inicio: async function(){
-            const idPlayer = await pegarIdPlayer()
-            game.players = []
-            game.players[idPlayer] = Snake(idPlayer)
-            const inputs = Inputs(game.players[idPlayer])
-            inputs.ativarTeclas(document)            
-            
-            game.frutas = []
-            game.frutas.push(Fruit(game))
-            
-            atualizarPontos(0)
-            atualizarHiScore(game.hiScore)
-            mostrarIdPlayer(idPlayer)
-            mostrarGameOver('')
-            mostrarHiScore('')
-
+        },
+        pontuacao: function(player){
+            if(player = game.players[game.idCurrentPlayer]){
+                game.setVelocidade(Math.floor(player.pontos / 50) +1 )
+            }
         }
     }
 

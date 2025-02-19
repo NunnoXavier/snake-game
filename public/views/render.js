@@ -1,15 +1,27 @@
 import { canvas } from "../index.js"
 import { gameStatus } from "../models/game.js"
 
-
 export const deviceDimension = { 
     heigth: window.innerHeight,
     width: window.innerWidth
 }
 
+let piscar = 0
+
+const brilho = function(){
+    if(piscar >= 9){
+        return 'gold'
+    }
+    else if(piscar >= 3){
+        return 'red'
+    }
+    else if(piscar >= 1){
+        return 'black'
+    }
+}
 
 const Render = function(game){
-    let frame = 0
+    let frame = 16
     const tela = canvas.getContext('2d')
     
     const definirTamanhoDaTela = function(){
@@ -22,35 +34,43 @@ const Render = function(game){
     
     definirTamanhoDaTela()
     tela.scale(game.zoom,game.zoom)    
+    
     const render = function(){
-        frame ++
-
+        piscar === 9? piscar = 0 : piscar ++
+        tela.clearRect(0,0, game.alturaTela, game.larguraTela)
         
-        if (frame >= Math.floor(60 / game.velocidade)) {
-            tela.clearRect(0,0, game.alturaTela, game.larguraTela)
+        for(const player in game.players){           
             
-            for(const player in game.players){           
+            if( frame === game.players[player].velocidade ){
                 game.players[player].andar()
-                game.verificaSeComeuFruta(player)    
-                game.verificaSeColidiuParede(player)    
-                game.verificaSeColidiuCalda(player)  
+                game.verificarPassos(player)
+                frame = 16
+            }else{
+                frame <= 1? frame = 16 : frame --
                 
-                game.players[player].calda.forEach((celula) =>{
-                    tela.fillStyle = game.players[player].cor
-                    tela.fillRect(celula.x, celula.y, 1, 1)
-                })
-
-                game.logs && console.log(`render: player ${ player }`, game.players[player].calda[0])
             }
             
-            game.frutas.forEach((fruta) => {
-                tela.fillStyle = fruta.cor
-                tela.fillRect(fruta.x, fruta.y, 1, 1)            
+            game.verificaSeComeuFruta(player)    
+            game.verificaSeColidiuParede(player)    
+            game.verificaSeColidiuCalda(player)
+            game.verificaPontuacao(player)
+
+            game.players[player].calda.forEach((celula) =>{
+                //tela.fillStyle = game.players[player].cor
+                tela.fillStyle = game.players[player].cor === 'brilho'? brilho() : game.players[player].cor
+                tela.fillRect(celula.x, celula.y, 1, 1)
             })
-            frame = 0
-        }    
-            
+
+            game.logs && console.log('frames')
+        }
+        
+        game.frutas.forEach((fruta) => {        
+            tela.fillStyle = fruta.cor === 'brilho'? brilho() : fruta.cor
+            tela.fillRect(fruta.x, fruta.y, 1, 1)
+        })
+        
         requestAnimationFrame(r)
+    
     }    
 
     const r = function(){

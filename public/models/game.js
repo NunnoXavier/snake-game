@@ -1,3 +1,10 @@
+import Inputs from '../controlers/inputs.js'
+import { pegarIdPlayer } from '../index.js'
+import Snake from './snake.js'
+import Fruit from './fruit.js'
+import { atualizarPontos, atualizarHiScore, mostrarIdPlayer, mostrarGameOver, mostrarHiScore,
+    atualizarVelocidade } from '../index.js'
+
 export const gameStatus = Object.freeze({
     wait: 0,
     run: 1,
@@ -12,9 +19,11 @@ export const gameMode = Object.freeze({
 
 let regras = {}
 let motor1
+let inputs
 
 const Game = function(){
     return {
+        idCurrentPlayer: 'snake1',
         status: gameStatus.wait,
         alturaTela: 0,
         larguraTela: 0,
@@ -27,7 +36,6 @@ const Game = function(){
         },
 
         zoom: 25,
-        velocidade: 1,
         players: {},
         frutas: [],
         hiScore: 0,
@@ -39,16 +47,44 @@ const Game = function(){
         },
 
         addVelocidade: function(){
-            this.velocidade < 16 ? this.velocidade += 1 : this.velocidade = 16
+            this.players[this.idCurrentPlayer].velocidade < 16 ? this.players[this.idCurrentPlayer].velocidade += 1 : this.players[this.idCurrentPlayer].velocidade = 16
+            atualizarVelocidade()
         },
         dimVelocidade: function(){
-            this.velocidade > 1 ? this.velocidade -= 1 : this.velocidade = 1
+            this.players[this.idCurrentPlayer].velocidade > 1 ? this.players[this.idCurrentPlayer].velocidade -= 1 : this.players[this.idCurrentPlayer].velocidade = 1
+            atualizarVelocidade()
         },
-        iniciar: function(){
+        
+        getVelocidade: function(){
+            return this.players[this.idCurrentPlayer].velocidade
+        },
+
+        setVelocidade: function(novaVelocidade = 1){
+            this.players[this.idCurrentPlayer].velocidade = novaVelocidade
+            atualizarVelocidade()
+        },
+
+        iniciar: async function(){
             if(this.status == gameStatus.run || this.status == gameStatus.pause) return
             this.status = gameStatus.run
-            regras.inicio()
+            this.idCurrentPlayer = await pegarIdPlayer()
+            this.players = []
+            this.players[this.idCurrentPlayer] = Snake(this.idCurrentPlayer)            
+            
+            inputs = Inputs(this)
+            inputs.ativarTeclas(document)            
+            
+            this.frutas = []
+            this.frutas.push(Fruit(this))
+            
+            atualizarPontos(0)
+            atualizarVelocidade()
+            atualizarHiScore(this.hiScore)
+            mostrarIdPlayer(this.idCurrentPlayer)
+            mostrarGameOver('')
+            mostrarHiScore('')
             motor1.rodarFrames()
+
         },
     
         pausar: function(){
@@ -104,6 +140,14 @@ const Game = function(){
             }
             if (colidiu) regras.colisaoCalda(idPlayer)
             return colidiu
+        },
+
+        verificarPassos: function(idPlayer){
+            regras.passos(this.players[idPlayer])
+        },
+
+        verificaPontuacao: function(idPlayer){
+            regras.pontuacao(this.players[idPlayer])
         },
 
         modo: gameMode,
