@@ -1,8 +1,3 @@
-<h1 align="center">SNAKE</h1>
-<div align="center">
-  <img src='https://github.com/user-attachments/assets/ae8350f3-c9c8-4e39-9c2c-82ff7bf09ae0'/>
-</div>
-<br/>
 Jogo feito com HTML, CSS e JS Vanilla. 
 Você pode acessar o jogo pronto no link https://nunnoxavier.github.io/snake-game/
 ou baixar o código do repositório.
