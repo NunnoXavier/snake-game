@@ -1,4 +1,3 @@
-import Inputs from '../controlers/inputs.js'
 import { pegarIdPlayer } from '../index.js'
 import Snake from './snake.js'
 import Fruit from './fruit.js'
@@ -19,7 +18,6 @@ export const gameMode = Object.freeze({
 
 let regras = {}
 let motor1
-let inputs
 
 const Game = function(){
     return {
@@ -69,11 +67,8 @@ const Game = function(){
             this.status = gameStatus.run
             this.idCurrentPlayer = await pegarIdPlayer()
             this.players = []
-            this.players[this.idCurrentPlayer] = Snake(this.idCurrentPlayer)            
-            
-            inputs = Inputs(this)
-            inputs.ativarTeclas(document)            
-            
+            this.players[this.idCurrentPlayer] = Snake(this.idCurrentPlayer)                       
+    
             this.frutas = []
             this.frutas.push(Fruit(this))
             

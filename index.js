@@ -1,6 +1,7 @@
 import Rules from "./controlers/rules.js"
 import Render from "./views/render.js"
 import Game, { gameMode } from "./models/game.js"
+import Inputs from '../controlers/inputs.js'
 
 window.onload = function (){
     
@@ -59,5 +60,6 @@ const regras = Rules(game)
 game.carregarRegras(regras)
 const motor1 = Render(game)
 game.carregarVisual(motor1)
-
+const inputs = Inputs(game)
+inputs.ativarTeclas(document)            
 
