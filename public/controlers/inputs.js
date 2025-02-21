@@ -4,7 +4,7 @@ const Inputs = function(game){
     function callback(event){
         setDirecao(event.key)
         const player = game.idCurrentPlayer
-        game.players[player].andar()
+        game.players[game.idCurrentPlayer].andar()
         game.verificaSeComeuFruta(player)    
         game.verificaSeColidiuParede(player)    
         game.verificaSeColidiuCalda(player)

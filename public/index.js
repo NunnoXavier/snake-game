@@ -3,9 +3,6 @@ import Render from "./views/render.js"
 import Game, { gameMode } from "./models/game.js"
 import Inputs from './controlers/inputs.js'
 
-window.onload = function (){
-    
-}
 
 export const canvas = document.getElementById('tela')
 const hudPlayer = document.getElementById('idPlayer')
