@@ -1,7 +1,7 @@
 import Rules from "./controlers/rules.js"
 import Render from "./views/render.js"
 import Game, { gameMode } from "./models/game.js"
-import Inputs from '../controlers/inputs.js'
+import Inputs from './controlers/inputs.js'
 
 window.onload = function (){
     
