@@ -98,3 +98,12 @@ button{
     font-size: 4em;
     width: 100%;
 }
+
+.border{
+    border: 1px solid green;
+}
+
+.padding{
+    padding: 5px;
+}
+
