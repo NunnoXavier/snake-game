@@ -3,6 +3,7 @@ import Snake from './snake.js'
 import Fruit from './fruit.js'
 import { atualizarPontos, atualizarHiScore, mostrarIdPlayer, mostrarGameOver, mostrarHiScore,
     atualizarVelocidade } from '../index.js'
+import Audio from '../audio/audio.js'
 
 export const gameStatus = Object.freeze({
     wait: 0,
@@ -18,6 +19,7 @@ export const gameMode = Object.freeze({
 
 let regras = {}
 let motor1
+const audio = Audio()
 
 const Game = function(){
     return {
@@ -62,23 +64,27 @@ const Game = function(){
             atualizarVelocidade()
         },
 
-        iniciar: async function(){
-            if(this.status == gameStatus.run || this.status == gameStatus.pause) return
-            this.status = gameStatus.run
-            this.idCurrentPlayer = await pegarIdPlayer()
+        iniciar: function(){
+            this.idCurrentPlayer = pegarIdPlayer()
             this.players = []
             this.players[this.idCurrentPlayer] = Snake(this.idCurrentPlayer)                       
-    
-            this.frutas = []
-            this.frutas.push(Fruit(this))
-            
-            atualizarPontos(0)
-            atualizarVelocidade()
-            atualizarHiScore(this.hiScore)
-            mostrarIdPlayer(this.idCurrentPlayer)
-            mostrarGameOver('')
-            mostrarHiScore('')
-            motor1.rodarFrames()
+            audio.playStart()
+            const timeStart = setTimeout(() => {
+                if(this.status == gameStatus.run || this.status == gameStatus.pause) return
+                this.status = gameStatus.run
+        
+                this.frutas = []
+                this.frutas.push(Fruit(this))
+                
+                atualizarPontos(0)
+                atualizarVelocidade()
+                atualizarHiScore(this.hiScore)
+                mostrarIdPlayer(this.idCurrentPlayer)
+                mostrarGameOver('')
+                mostrarHiScore('')
+                motor1.rodarFrames()
+            },2000)
+
 
         },
     

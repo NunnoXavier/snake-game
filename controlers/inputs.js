@@ -1,39 +1,58 @@
+import { gameStatus } from "../models/game.js"
 
 const Inputs = function(game){
 
     function callback(event){
-        setDirecao(event.key)
+        if(game.status != gameStatus.run){
+            return
+        }
+        if (setDirecao(event.key)){
+            game.players[game.idCurrentPlayer].andar()
+        }
         const player = game.idCurrentPlayer
-        game.players[game.idCurrentPlayer].andar()
         game.verificaSeComeuFruta(player)    
         game.verificaSeColidiuParede(player)    
         game.verificaSeColidiuCalda(player)
     }
     
     function setDirecao(tecla){
+        let result = false
+        const plr = game.players[game.idCurrentPlayer]
         switch (tecla) {
             case 'ArrowUp':
-                game.players[game.idCurrentPlayer].direcao = 'cima'            
-                break;
+                if(plr.direcao != 'baixo'){
+                    plr.direcao = 'cima'
+                    result = true
+                }
+                break
             case 'ArrowDown':
-                game.players[game.idCurrentPlayer].direcao = 'baixo'                                
-                break;
+                if(plr.direcao != 'cima'){
+                    plr.direcao = 'baixo'
+                    result = true
+                }
+                break
             case 'ArrowLeft':
-                game.players[game.idCurrentPlayer].direcao = 'esquerda'                                 
-                break;
+                if(plr.direcao != 'direita'){
+                    plr.direcao = 'esquerda'
+                    result = true
+                }
+                break
             case 'ArrowRight':
-                game.players[game.idCurrentPlayer].direcao = 'direita'                          
-                break;
-        
+                if(plr.direcao != 'esquerda'){
+                    plr.direcao = 'direita'
+                    result = true
+                }
+                break      
             default:
-                break;
+                break
         }
+        return result
     }
     
     return {
         ativarTeclas: function(element ){
-            element.removeEventListener('keydown', callback)
-            element.addEventListener('keydown', callback)
+           element.removeEventListener('keydown', callback)
+           element.addEventListener('keydown', callback)
         }
     }
 }
