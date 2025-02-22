@@ -1,6 +1,9 @@
 import Fruit from "../models/fruit.js"
 import { gameMode, gameStatus } from "../models/game.js"
-import { atualizarPontos, mostrarGameOver, mostrarHiScore, atualizarVelocidade } from "../index.js"
+import { atualizarPontos, mostrarGameOver, mostrarHiScore } from "../index.js"
+import Audio from '../audio/audio.js'
+
+const audio = Audio()
 
 const Rules = function(game){
     
@@ -27,6 +30,7 @@ const Rules = function(game){
             game?.frutas?.push(novaFruta)
 
             game.logs && console.log(`Rules: ${idPlayer} - pontuação: ${game.players[idPlayer].pontos}`)
+            audio.playGulp()
         },
         
         colisaoParede: function(idPlayer){
@@ -40,6 +44,7 @@ const Rules = function(game){
                         mostrarHiScore(`NEW HI-SCORE ${game.hiScore}`)
                     }
                     game.logs && console.log(`rules: score: ${game.players[idPlayer].pontos} | hi-score: ${game.hiScore}`)
+                    audio.playGameOver()
                     break;
                 case gameMode.teletransporte:
                     game.logs && console.log(`Rules: ${idPlayer} se teletransportou`)
@@ -60,13 +65,18 @@ const Rules = function(game){
                 mostrarHiScore(`NEW HI-SCORE ${game.hiScore}`)
             }
             game.logs && console.log(`rules: score: ${game.players[idPlayer].pontos} | hi-score: ${game.hiScore}`)
+            audio.playGameOver()
         },
         passos: function(player){
 
         },
         pontuacao: function(player){
             if(player = game.players[game.idCurrentPlayer]){
+                const velocidade = player.velocidade
                 game.setVelocidade(Math.floor(player.pontos / 50) +1 )
+                if(velocidade != player.velocidade){
+                    audio.playLevelUp()
+                }
             }
         }
     }

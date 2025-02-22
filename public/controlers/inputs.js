@@ -1,7 +1,11 @@
+import { gameStatus } from "../models/game.js"
 
 const Inputs = function(game){
 
     function callback(event){
+        if(game.status != gameStatus.run){
+            return
+        }
         if (setDirecao(event.key)){
             game.players[game.idCurrentPlayer].andar()
         }
@@ -47,8 +51,8 @@ const Inputs = function(game){
     
     return {
         ativarTeclas: function(element ){
-            element.removeEventListener('keydown', callback)
-            element.addEventListener('keydown', callback)
+           element.removeEventListener('keydown', callback)
+           element.addEventListener('keydown', callback)
         }
     }
 }

@@ -42,7 +42,7 @@ export const mostrarHiScore = function(msg){
     msgHiScore.innerHTML = msg
 }
 
-export const pegarIdPlayer = async function(){
+export const pegarIdPlayer = function(){
     const nome = prompt('Digite o seu nome')
     return nome
 }
@@ -58,5 +58,4 @@ game.carregarRegras(regras)
 const motor1 = Render(game)
 game.carregarVisual(motor1)
 const inputs = Inputs(game)
-inputs.ativarTeclas(document)            
-
+inputs.ativarTeclas(document)
